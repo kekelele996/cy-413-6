@@ -4,15 +4,18 @@ import type { Mood, MoodPayload, MoodTrendPoint } from '../types';
 
 interface MoodState {
   moods: Mood[];
+  todayMood: Mood | null;
   trend: MoodTrendPoint[];
   loading: boolean;
   loadMoods: () => Promise<void>;
+  loadTodayMood: () => Promise<void>;
   loadTrend: () => Promise<void>;
   createMood: (payload: MoodPayload) => Promise<void>;
 }
 
 export const useMoodStore = create<MoodState>((set, get) => ({
   moods: [],
+  todayMood: null,
   trend: [],
   loading: false,
   loadMoods: async () => {
@@ -24,13 +27,21 @@ export const useMoodStore = create<MoodState>((set, get) => ({
       set({ loading: false });
     }
   },
+  loadTodayMood: async () => {
+    try {
+      const todayMood = await moodApi.getTodayMood();
+      set({ todayMood });
+    } catch {
+      set({ todayMood: null });
+    }
+  },
   loadTrend: async () => {
     const trend = await moodApi.getMoodTrend();
     set({ trend });
   },
   createMood: async (payload) => {
     const mood = await moodApi.createMood(payload);
-    set({ moods: [mood, ...get().moods] });
+    set({ moods: [mood, ...get().moods], todayMood: mood });
     await get().loadTrend();
   },
 }));

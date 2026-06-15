@@ -21,7 +21,10 @@ def list_journals(db: Session, user: User, mood_level: int | None = None) -> lis
 def create_journal(db: Session, user: User, payload: JournalCreate) -> Journal:
     app_logger.info(
         LOG_TEMPLATES["JOURNAL_CREATE"].format(
-            user_id=user.id, title=payload.title, mood_level=payload.mood_level
+            user_id=user.id,
+            title=payload.title,
+            mood_level=payload.mood_level,
+            mood_tags=",".join(payload.mood_tags) if payload.mood_tags else "none",
         )
     )
     journal = Journal(user_id=user.id, **payload.model_dump())

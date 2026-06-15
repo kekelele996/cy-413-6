@@ -8,19 +8,27 @@ from src.controllers import mood_controller
 from src.middlewares.auth import get_current_user
 from src.models.mood import Mood
 from src.models.user import User
-from src.schemas.mood import MoodCreate, MoodRead, MoodTrendPoint, MoodUpdate
+from src.schemas.mood import MoodCreate, MoodRead, MoodReadWithJournal, MoodTrendPoint, MoodUpdate
 
 router = APIRouter()
 
 
-@router.get("", response_model=list[MoodRead])
+@router.get("", response_model=list[MoodReadWithJournal])
 def list_moods(
     start_date: date | None = None,
     end_date: date | None = None,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
-) -> list[Mood]:
+) -> list[MoodReadWithJournal]:
     return mood_controller.list_moods(db, current_user, start_date, end_date)
+
+
+@router.get("/today", response_model=MoodRead | None)
+def get_today_mood(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> Mood | None:
+    return mood_controller.get_today_mood(db, current_user)
 
 
 @router.post("", response_model=MoodRead)

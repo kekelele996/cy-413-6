@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS journals (
   title VARCHAR(200) NOT NULL,
   content TEXT NOT NULL,
   mood_level INTEGER NOT NULL CHECK (mood_level BETWEEN 1 AND 10),
+  mood_tags TEXT[] NOT NULL DEFAULT '{}',
   weather VARCHAR(64),
   is_private BOOLEAN NOT NULL DEFAULT TRUE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -99,9 +100,9 @@ SELECT id, 6, ARRAY['calm', 'tired'], '整体平稳，需要早点休息。', CU
 UNION ALL
 SELECT id, 7, ARRAY['happy', 'calm'], '今天想继续保持呼吸练习。', CURRENT_DATE FROM users WHERE email = 'demo@mindgarden.example.com';
 
-INSERT INTO journals (user_id, title, content, mood_level, weather, is_private)
-SELECT id, '开始整理心情花园', '今天把近期压力写下来后，发现真正困扰我的其实是任务顺序，而不是任务数量。', 7, 'cloudy', true
+INSERT INTO journals (user_id, title, content, mood_level, mood_tags, weather, is_private)
+SELECT id, '开始整理心情花园', '今天把近期压力写下来后，发现真正困扰我的其实是任务顺序，而不是任务数量。', 7, ARRAY['calm', 'happy'], 'cloudy', true
 FROM users WHERE email = 'demo@mindgarden.example.com'
 UNION ALL
-SELECT id, '一次十分钟冥想', '十分钟并没有改变所有事情，但它给了我一个暂停点。', 8, 'sunny', true
+SELECT id, '一次十分钟冥想', '十分钟并没有改变所有事情，但它给了我一个暂停点。', 8, ARRAY['happy', 'calm'], 'sunny', true
 FROM users WHERE email = 'demo@mindgarden.example.com';

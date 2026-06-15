@@ -6,6 +6,12 @@ from src.constants.error_codes import ERROR_CODES
 from src.constants.mood import MoodTag
 
 
+class JournalSummary(BaseModel):
+    id: int
+    title: str
+    content_excerpt: str
+
+
 class MoodBase(BaseModel):
     mood_level: int = Field(ge=1, le=10)
     mood_tags: list[str]
@@ -37,6 +43,16 @@ class MoodRead(MoodBase):
     id: int
     user_id: int
     created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class MoodReadWithJournal(MoodBase):
+    id: int
+    user_id: int
+    created_at: datetime
+    has_journal: bool = False
+    journal: JournalSummary | None = None
 
     model_config = {"from_attributes": True}
 

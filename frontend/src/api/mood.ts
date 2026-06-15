@@ -8,6 +8,10 @@ export function getMoods(params?: { start_date?: string; end_date?: string }) {
   return request<Mood[]>(`/moods${search.size ? `?${search}` : ''}`);
 }
 
+export function getTodayMood() {
+  return request<Mood | null>('/moods/today');
+}
+
 export function createMood(payload: MoodPayload) {
   return request<Mood>('/moods', {
     method: 'POST',

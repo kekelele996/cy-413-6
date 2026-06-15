@@ -18,6 +18,12 @@ export interface AuthToken {
   user: User;
 }
 
+export interface JournalSummary {
+  id: number;
+  title: string;
+  content_excerpt: string;
+}
+
 export interface Mood {
   id: number;
   user_id: number;
@@ -26,6 +32,8 @@ export interface Mood {
   note?: string | null;
   record_date: string;
   created_at: string;
+  has_journal?: boolean;
+  journal?: JournalSummary | null;
 }
 
 export interface MoodPayload {
@@ -73,6 +81,7 @@ export interface Journal {
   title: string;
   content: string;
   mood_level: number;
+  mood_tags: MoodTag[];
   weather?: string | null;
   is_private: boolean;
   created_at: string;
@@ -82,6 +91,7 @@ export interface JournalPayload {
   title: string;
   content: string;
   mood_level: number;
+  mood_tags: MoodTag[];
   weather?: string;
   is_private: boolean;
 }

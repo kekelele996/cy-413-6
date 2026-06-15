@@ -4,16 +4,26 @@ from sqlalchemy.orm import Session
 
 from src.models.mood import Mood
 from src.models.user import User
-from src.schemas.mood import MoodCreate, MoodTrendPoint, MoodUpdate
+from src.schemas.mood import MoodCreate, MoodReadWithJournal, MoodTrendPoint, MoodUpdate
 from src.services import mood_service
 from src.utils.logger import app_logger
 
 
-def list_moods(db: Session, current_user: User, start_date: date | None, end_date: date | None) -> list[Mood]:
+def list_moods(
+    db: Session, current_user: User, start_date: date | None, end_date: date | None
+) -> list[MoodReadWithJournal]:
     try:
         return mood_service.list_moods(db, current_user, start_date, end_date)
     except Exception as exc:
         app_logger.error("Mood[user_id=%s] controller list failed: %s", current_user.id, exc)
+        raise
+
+
+def get_today_mood(db: Session, current_user: User) -> Mood | None:
+    try:
+        return mood_service.get_today_mood(db, current_user)
+    except Exception as exc:
+        app_logger.error("Mood[user_id=%s] controller get today failed: %s", current_user.id, exc)
         raise
 
 
