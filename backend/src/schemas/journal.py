@@ -52,6 +52,7 @@ class JournalRead(JournalBase):
     id: int
     user_id: int
     created_at: datetime
+    mood_tags: list[str] = []
 
     model_config = {"from_attributes": True}
 

@@ -15,6 +15,7 @@ services:
     volumes:
       - mindgarden_pgdata:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/001_init.sql:ro
+      - ./database/migrations/001_add_journal_mood_tags.sql:/docker-entrypoint-initdb.d/002_migration_001.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-mindgarden_user} -d ${DB_NAME:-mindgarden_db}"]
       interval: 10s

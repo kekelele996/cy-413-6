@@ -81,7 +81,7 @@ export interface Journal {
   title: string;
   content: string;
   mood_level: number;
-  mood_tags: MoodTag[];
+  mood_tags?: MoodTag[];
   weather?: string | null;
   is_private: boolean;
   created_at: string;
@@ -91,7 +91,7 @@ export interface JournalPayload {
   title: string;
   content: string;
   mood_level: number;
-  mood_tags: MoodTag[];
+  mood_tags?: MoodTag[];
   weather?: string;
   is_private: boolean;
 }

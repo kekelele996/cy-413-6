@@ -24,5 +24,9 @@ LOG_TEMPLATES = {
     "ERROR_WRAPPED": "Error[code={code}] entity={entity} message={message}",
     "AUDIT_WRITE": "Audit[method={method}] path={path} actor={actor}",
     "HEALTH_CHECK": "Health[service=MindGarden] checked",
+    "MIGRATION_APPLY": "Migration[name={name}] applied successfully",
+    "MIGRATION_SKIP": "Migration[name={name}] skipped: {reason}",
+    "MIGRATION_WARN": "Migration[name={name}] warning: {error}",
+    "MIGRATION_SUMMARY": "Migration summary: {applied} applied, {skipped} skipped, {total} total",
 }
 

@@ -7,6 +7,7 @@ from src.config.app import settings
 from src.config.database import Base, engine
 from src.middlewares.audit_logger import AuditLoggerMiddleware
 from src.middlewares.error_handler import register_error_handlers
+from src.migrations import run_migrations
 from src.routes import assessment, auth, journal, mood, user
 from src.utils.logger import app_logger
 
@@ -15,6 +16,7 @@ from src.utils.logger import app_logger
 async def lifespan(_: FastAPI):
     Base.metadata.create_all(bind=engine)
     app_logger.info("DATABASE_SCHEMA_SYNCED")
+    run_migrations()
     yield
 
 
